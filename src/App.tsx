@@ -1,48 +1,46 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NolcopBotImmo from "./components/NolcopBotImmo";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { EntrepriseInfo } from "./data/entrepriseData";
-import HomePage from "./pages/HomePage";
-import AchatPage from "./pages/AchatPage";
-import LocationPage from "./pages/LocationPage";
+import Footer from "./components/Footer";
+import AccueilPage from "./pages/AccueilPage";
+import ChambresPage from "./pages/ChambresPage";
+import ReservationPage from "./pages/ReservationPage";
 import ContactPage from "./pages/ContactPage";
-import ConfigPage from "./pages/ConfigPage";
 
-const App = () => {
-  const [entrepriseData, setEntrepriseData] = useState<EntrepriseInfo | null>(
-    null
-  );
+const AppContent: React.FC = () => {
+  const location = useLocation();
 
-  // Charger les données sauvegardées au démarrage
+  // Smooth scroll to top when route changes
   React.useEffect(() => {
-    const savedData = localStorage.getItem("entrepriseData");
-    if (savedData) {
-      try {
-        setEntrepriseData(JSON.parse(savedData));
-      } catch (error) {
-        console.error("Erreur lors du chargement des données:", error);
-      }
-    }
-  }, []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
   return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="grow">
+        <Routes>
+          <Route path="/" element={<AccueilPage />} />
+          <Route path="/accueil" element={<AccueilPage />} />
+          <Route path="/chambres" element={<ChambresPage />} />
+          <Route path="/reservation" element={<ReservationPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
     <Router>
-      <div className="min-h-screen bg-linear-to-br from-gray-50 via-blue-50 to-purple-50">
-        <Navbar />
-
-        <main className="pt-16">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/achat" element={<AchatPage />} />
-            <Route path="/location" element={<LocationPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/config" element={<ConfigPage />} />
-          </Routes>
-        </main>
-
-        <NolcopBotImmo entrepriseData={entrepriseData} />
-      </div>
+      <AppContent />
     </Router>
   );
 };

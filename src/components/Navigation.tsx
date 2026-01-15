@@ -1,45 +1,30 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Bed, Calendar, Phone, Menu, X } from "lucide-react";
+import { Calendar, Home, Bed, Phone, Menu, X } from "lucide-react";
 
-const Navbar: React.FC = () => {
+const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const menuItems = [
-    { icon: Home, label: "Accueil", href: "/" },
+    { icon: Home, label: "Accueil", href: "/accueil" },
     { icon: Bed, label: "Chambres", href: "/chambres" },
     { icon: Calendar, label: "Réservation", href: "/reservation" },
     { icon: Phone, label: "Contact", href: "/contact" },
   ];
 
   const isActive = (path: string) => {
-    return location.pathname === path;
+    return (
+      location.pathname === path ||
+      (path === "/accueil" && location.pathname === "/")
+    );
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/90 border-b border-white/20 shadow-lg">
+    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-white/20 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="bg-blue-600 p-2 rounded-xl shadow-lg group-hover:bg-blue-700 transition-all duration-300 group-hover:scale-105">
-              <img
-                src="/logo.png"
-                alt="Hôtel Horizon"
-                className="h-6 w-6 text-white"
-              />
-            </div>
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                Hôtel Horizon
-              </h1>
-              <p className="text-xs md:text-sm text-gray-600">Cotonou, Bénin</p>
-            </div>
-          </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex space-x-8">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
@@ -56,11 +41,9 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 rounded-lg bg-white/50 hover:bg-white/70 transition-all duration-300"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
           >
             {isOpen ? (
               <X className="h-6 w-6 text-gray-700" />
@@ -70,22 +53,21 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden py-4 space-y-2 backdrop-blur-lg bg-white/95 rounded-2xl mt-2 shadow-xl border border-white/20 animate-in slide-in-from-top-2 duration-300">
+          <div className="md:hidden py-4 space-y-2 backdrop-blur-lg bg-white/90 rounded-2xl mt-2 shadow-xl border border-white/20">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 mx-2 ${
+                className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 mx-2 ${
                   isActive(item.href)
-                    ? "bg-blue-600 text-white shadow-lg"
+                    ? "bg-blue-600 text-white"
                     : "text-gray-700 hover:bg-white/70 hover:text-blue-600"
                 }`}
               >
-                <item.icon className="h-5 w-5" />
-                <span className="font-medium">{item.label}</span>
+                <item.icon className="h-4 w-4" />
+                <span>{item.label}</span>
               </Link>
             ))}
           </div>
@@ -95,4 +77,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default Navigation;
