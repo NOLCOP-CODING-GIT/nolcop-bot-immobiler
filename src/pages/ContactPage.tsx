@@ -399,7 +399,7 @@ const ContactPage: React.FC = () => {
               <div className="space-y-4">
                 {services.map((service, index) => (
                   <div key={index} className="flex items-start">
-                    <div className="mr-3 flex-shrink-0">{service.icon}</div>
+                    <div className="mr-3 shrink-0">{service.icon}</div>
                     <div>
                       <h4 className="font-medium text-gray-900">
                         {service.title}

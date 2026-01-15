@@ -1,6 +1,9 @@
 import OpenAI from "openai";
 import { generateSystemPrompt, nolcopData } from "../data/entrepriseData";
 
+type ChatCompletionMessageParam =
+  OpenAI.Chat.Completions.ChatCompletionMessageParam;
+
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
@@ -42,7 +45,7 @@ class ImmobilierAIService {
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o",
-        messages: messages as any[],
+        messages: messages as ChatCompletionMessageParam[],
         max_tokens: 500,
         temperature: 0.7,
       });
